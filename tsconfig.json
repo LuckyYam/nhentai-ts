@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",                                  
+    "module": "commonjs",                                
+    "declaration": true,                              
+    "outDir": "./dist",                               
+    "esModuleInterop": true,                  
+    "forceConsistentCasingInFileNames": true,         
+    "strict": true,                                     
+    "noImplicitAny": true,                         
+    "strictNullChecks": true,                         
+    "strictFunctionTypes": true,                      
+    "noUnusedLocals": true,                           /* Enable error reporting when a local variables aren't read. */
+    "noUnusedParameters": true,                       /* Raise an error when a function parameter isn't read */
+  }
+}
