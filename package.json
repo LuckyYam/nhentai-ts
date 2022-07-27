@@ -1,6 +1,6 @@
 {
   "name": "nhentai.ts",
-  "description": "A scraper for NHentai with built-in types",
+  "description": "A scraper for NHentai with types",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
