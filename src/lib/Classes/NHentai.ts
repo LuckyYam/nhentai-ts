@@ -11,7 +11,7 @@ export class NHentai {
      */
     constructor(
         private options: { site: TSite | `https://${TSite}` } = {
-            site: 'https://nhentai.website'
+            site: 'https://nhentai.to'
         }
     ) {
         if (

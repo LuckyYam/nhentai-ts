@@ -18,6 +18,6 @@ export interface IDoujinInfo extends IListData {
     languages: string[]
     /** Categories of the doujin */
     categories: string[]
-    /** Pages of the doujin */
-    pages: Pages
+    /** Images of the doujin */
+    images: Pages
 }

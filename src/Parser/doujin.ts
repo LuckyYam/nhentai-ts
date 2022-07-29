@@ -6,11 +6,11 @@ export const parseDoujinInfo = (
     $: CheerioAPI,
     site: keyof typeof baseURLS
 ): IDoujinInfo => {
-    const pages: string[] = []
+    const images: string[] = []
     $('.thumb-container').each((i, el) => {
         const url = $(el).find('a > img').attr('data-src')
         if (url)
-            pages.push(
+            images.push(
                 url
                     .replace(`${i + 1}t`, `${i + 1}`)
                     .replace(imageSites[site], 'i.nhentai.net')
@@ -74,7 +74,7 @@ export const parseDoujinInfo = (
         languages,
         categories,
         cover: cover ? cover.replace('cdn.nload.xyz', 't3.nhentai.net') : null,
-        pages: new Pages(pages),
+        images: new Pages(images),
         url
     }
 }

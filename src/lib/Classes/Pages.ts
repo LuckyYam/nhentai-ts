@@ -5,7 +5,11 @@ import { createWriteStream } from 'fs'
 import axios from 'axios'
 
 export class Pages {
-    constructor(public data: string[]) {}
+    /**
+     * 
+     * @param pages An array of URLS of the doujin pages
+     */
+    constructor(public pages: string[]) {}
 
     /**
      * Builds a PDF from the doujin pages
@@ -25,7 +29,7 @@ export class Pages {
             : `${tmpdir()}/${Math.random().toString(36)}.pdf`
         const stream = createWriteStream(file)
         pdf.pipe(stream)
-        for (const url of this.data) {
+        for (const url of this.pages) {
             const { data } = await axios.get<Buffer>(url, {
                 responseType: 'arraybuffer'
             })
@@ -37,8 +41,8 @@ export class Pages {
             pdf.addPage({ size: [img.width, img.height] })
             pdf.image(img, 0, 0)
             await unlink(filename)
-            const index = this.data.indexOf(url)
-            if (index === this.data.length - 1) pdf.end()
+            const index = this.pages.indexOf(url)
+            if (index === this.pages.length - 1) pdf.end()
         }
         await new Promise((resolve, reject) => {
             stream.on('finish', () => resolve(file))

@@ -12,10 +12,10 @@ export class List implements IListData {
     ) {}
 
     /**
-     * Gets the info of a doujin
-     * @returns The info of the doujin
+     * Gets the contents of a doujin
+     * @returns The contents of the doujin
      */
-    public async getDoujin(): Promise<IDoujinInfo> {
+    public async getContents(): Promise<IDoujinInfo> {
         return await axios
             .get<string>(this.url)
             .then(({ data }) =>
