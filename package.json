@@ -7,7 +7,11 @@
   "license": "MIT",
   "keywords": [
     "nhentai",
-    "doujin"
+    "doujin",
+    "nhentai-pdf",
+    "nhentai-api",
+    "nhentai-reader",
+    "nhentai-downloader"
   ],
   "files": [
     "dist"
@@ -34,10 +38,12 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "pdfkit": "^0.13.0"
   },
   "devDependencies": {
     "@types/node": "^18.6.1",
+    "@types/pdfkit": "^0.12.6",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.20.0",

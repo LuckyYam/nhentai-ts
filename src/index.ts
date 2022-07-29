@@ -1,1 +1,2 @@
-export default 'nhentai.ts'
+export * from './lib'
+export * from './Types'
