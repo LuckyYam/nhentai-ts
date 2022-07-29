@@ -1,6 +1,6 @@
-# MangaKakalotScrapper
+# nhentai-ts
 
-[![NPM](https://img.shields.io/badge/Available%20On-NPM-lightgrey.svg?logo=npm&logoColor=339933&labelColor=white&style=flat-square)](https://www.npmjs.com/package/nhentai-ts)
+[![NPM](https://img.shields.io/badge/Available%20On-NPM-lightgrey.svg?logo=npm&logoColor=339933&labelColor=white&style=flat-square)](https://www.npmjs.com/package/@shineiichijo/nhentai-ts)
 
 Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the available sites here](https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)).
 
@@ -10,12 +10,12 @@ Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the av
 
 ## Installation
 ```
-yarn add nhentai-ts
+yarn add @shineiichijo/nhentai-ts
 ```
 
 ## Usage Examples
 ```ts
-import { NHentai } from 'nhentai-ts'
+import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const nhentai = new NHentai()
 ;(async () => {
@@ -31,7 +31,7 @@ const nhentai = new NHentai()
 ```
 
 ```ts
-import { NHentai } from 'nhentai-ts'
+import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const nhentai = new NHentai({ site: 'nhentai.website' }) //configuring a mirror site of the class (you can check the available sites here: https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)
 //validates the ID of a doujin
@@ -39,7 +39,7 @@ nhentai.validate('172').then(console.log)
 ```
 
 ```ts
-import { NHentai } from 'nhentai-ts'
+import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const nhentai = new NHentai({ site: 'https://nhentai.xxx' })
 //explores all of the available doujin
@@ -47,7 +47,7 @@ nhentai.explore(2 /* Page number of exploring the doujin */).then(console.log)
 ```
 
 ```ts
-import { NHentai } from 'nhentai-ts'
+import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const nhentai = new NHentai()
 //gets a random doujin with its contents
@@ -55,7 +55,7 @@ nhentai.getRandom().then(console.log)
 ```
 
 ```ts
-import { NHentai } from 'nhentai-ts'
+import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const nhentai = new NHentai()
 //gets a doujin contents by its ID
