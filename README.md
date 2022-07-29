@@ -2,7 +2,7 @@
 
 [![NPM](https://img.shields.io/badge/Available%20On-NPM-lightgrey.svg?logo=npm&logoColor=339933&labelColor=white&style=flat-square)](https://www.npmjs.com/package/nhentai-ts)
 
-Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the available sites](https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)).
+Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the available sites here](https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)).
 
 [Documentation](https://luckyyam.github.io/nhentai-ts/)
 
