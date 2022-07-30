@@ -23,7 +23,7 @@ export const parseDoujinList = (
             .last()
             .text()
             .split('\n')
-            .filter((el) => Number(el) !== NaN && Number(el) > 0)
+            .filter((el) => Number(el) >= 1)
         totalPages = Number(split[split.length - 1])
     }
     const pagination = {

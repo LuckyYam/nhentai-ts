@@ -11,7 +11,8 @@
     "nhentai-pdf",
     "nhentai-api",
     "nhentai-reader",
-    "nhentai-downloader"
+    "nhentai-downloader",
+    "zip"
   ],
   "files": [
     "dist"
@@ -39,6 +40,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
+    "jszip": "^3.10.0",
     "pdfkit": "^0.13.0"
   },
   "devDependencies": {
