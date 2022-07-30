@@ -38,14 +38,9 @@ export class Pages {
             const { data } = await axios.get<Buffer>(url, {
                 responseType: 'arraybuffer'
             })
-            const filename = `${tmpdir()}/${Math.random().toString(36)}.${
-                url.includes('jpg') ? 'jpg' : 'png'
-            }`
-            await writeFile(filename, data)
-            const img = (pdf as any).openImage(filename)
+            const img = (pdf as any).openImage(data)
             pdf.addPage({ size: [img.width, img.height] })
             pdf.image(img, 0, 0)
-            await unlink(filename)
             const index = this.pages.indexOf(url)
             if (index === this.pages.length - 1) pdf.end()
         }

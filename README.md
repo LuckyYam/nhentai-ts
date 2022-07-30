@@ -60,4 +60,31 @@ import { NHentai } from '@shineiichijo/nhentai-ts'
 const nhentai = new NHentai()
 //gets a doujin contents by its ID
 nhentai.getDoujin(172).then(console.log)
+
+```
+
+```ts
+import { NHentai } from '@shineiichijo/nhentai-ts'
+
+const nhentai = new NHentai()
+nhentai.getDoujin('2456').then(
+    async (res) =>
+        //downloads the pages of a doujin and saves it in a folder
+        await res.images.download(
+            'nhentai' /* Folder name where the downloaded pages should be saved */
+        )
+)
+```
+
+```ts
+import { NHentai } from '@shineiichijo/nhentai-ts'
+
+const nhentai = new NHentai()
+nhentai.getRandom().then(
+    async (res) =>
+        //Builds a zip of doujin pages
+        await res.images.zip(
+            'nhentai.zip' /* Filname of where the zip should be saved */
+        ) //it will return a Buffer if no filename is provided
+)
 ```
