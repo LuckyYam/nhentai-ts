@@ -6,14 +6,14 @@ import axios from 'axios'
 import JSZip from 'jszip'
 import { join } from 'path'
 
-let title!: string
 export class Pages {
+    #title: string
     /**
      *
      * @param pages An array of URLS of the doujin pages
      */
     constructor(public pages: string[], __title: string) {
-        title = __title
+        this.#title = __title
     }
 
     /**
@@ -67,7 +67,7 @@ export class Pages {
     public async zip(filename: string): Promise<string>
     public async zip(filename?: string): Promise<Buffer | string> {
         const zip = new JSZip()
-        const folder = zip.folder(title)
+        const folder = zip.folder(this.#title)
         for (const url of this.pages)
             folder.file(
                 `${this.pages.indexOf(url) + 1}.${
@@ -113,7 +113,9 @@ export class Pages {
                     }`
                 ),
                 (
-                    await axios.get<Buffer>(url)
+                    await axios.get<Buffer>(url, {
+                        responseType: 'arraybuffer'
+                    })
                 ).data
             )
     }
