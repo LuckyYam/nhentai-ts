@@ -7,7 +7,7 @@ export const baseURLS = {
 }
 
 export const imageSites = {
-    to: 'cdn.nload.xyz',
+    to: 'cdn.dogehls.xyz',
     xxx: 'cdn.nhentai.xxx',
-    website: 'cdn.nload.xyz'
+    website: 'cdn.dogehls.xyz'
 }

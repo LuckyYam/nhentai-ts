@@ -74,7 +74,7 @@ export const parseDoujinInfo = (
         groups,
         languages,
         categories,
-        cover: cover ? cover.replace('cdn.nload.xyz', 't3.nhentai.net') : null,
+        cover: cover ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net') : null,
         images,
         url
     }
