@@ -1,5 +1,5 @@
 import { CheerioAPI } from 'cheerio'
-import { baseURLS, imageSites, Pages } from '../lib'
+import { baseURLS, clean, imageSites, Pages } from '../lib'
 import { TURL, IDoujinInfo } from '../Types'
 
 export const parseDoujinInfo = (
@@ -67,14 +67,16 @@ export const parseDoujinInfo = (
         id,
         title: titles.english,
         originalTitle: titles.original,
-        parodies,
-        characters,
-        tags,
-        artists,
-        groups,
-        languages,
-        categories,
-        cover: cover ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net') : null,
+        parodies: clean(parodies),
+        characters: clean(characters),
+        tags: clean(tags),
+        artists: clean(artists),
+        groups: clean(groups),
+        languages: clean(languages),
+        categories: clean(categories),
+        cover: cover
+            ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net')
+            : null,
         images,
         url
     }

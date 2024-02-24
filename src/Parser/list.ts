@@ -11,20 +11,26 @@ export const parseDoujinList = (
     const baseURL = baseURLS[site]
     let currentPage = 1
     let totalPages = 1
-    const pageElements =
-        site === 'to'
-            ? $('body > section')
-            : site === 'xxx'
-            ? $('#content > section')
-            : $('#fnh > section')
-    if (pageElements.find('.page.current').html()) {
-        currentPage = Number(pageElements.find('.page.current').text())
-        const split = $(pageElements)
-            .last()
-            .text()
-            .split('\n')
-            .filter((el) => Number(el) >= 1)
-        totalPages = Number(split[split.length - 1])
+    if (site === 'xxx') {
+        const { length } = $('.main_wrap > ul > li')
+        totalPages = Number(
+            $(`.main_wrap > ul > li:nth-child(${length - 1})`).text()
+        )
+        currentPage = Number($('.main_wrap > ul > li.page-item.active').text())
+    } else {
+        currentPage = Number($('.pagination').find('.page.current').text())
+        if (site === 'to') {
+            const split = $('.pagination')
+                .text()
+                .split('\n')
+                .filter((el) => Number(el) >= 1)
+            totalPages = Number(split[split.length - 1])
+        } else
+            totalPages = Number(
+                ($('.pagination').find('a').last().attr('href') || '').split(
+                    '='
+                )[1]
+            )
     }
     const pagination = {
         currentPage,

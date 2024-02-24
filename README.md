@@ -2,7 +2,7 @@
 
 [![NPM](https://img.shields.io/badge/Available%20On-NPM-lightgrey.svg?logo=npm&logoColor=339933&labelColor=white&style=flat-square)](https://www.npmjs.com/package/@shineiichijo/nhentai-ts)
 
-Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the available sites here](https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)).
+Scrap and build a PDF of a doujin from NHentai. [Check the available sites here](https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1).
 
 [Documentation](https://luckyyam.github.io/nhentai-ts/)
 
@@ -13,7 +13,31 @@ Scrap and build a PDF of a doujin from NHentai (only mirror sites, [check the av
 yarn add @shineiichijo/nhentai-ts
 ```
 
+## Note
+
+If you're choosing `nhentai.net` for the site, make sure to follow the following steps (as the site has enabled cloudflare protection):
+
+- Open https://nhentai.net/ in your browser.
+- Open Dev Tools and set the User Agent to what you want (you'll need the user agent).
+- Reload the site and wait for the clearance of cloudflare (without closing the Dev Tools).
+- Save the cookie value from the Network Tab (`cf_clearance` value).
+
+After following all these steps, you are all set. You can also check the [example](#usage-examples) of it (at the first one). Remember, the cookie value expires after 30 minutes of inactivity. So, you might have to do the above steps again (in case you're gonna use it again).
+
 ## Usage Examples
+```ts
+import { NHentai } from '@shineiichijo/nhentai-ts'
+
+const user_agent = 'User Agent'
+const cookie_value = 'cookie'
+const nhentai = new NHentai({ site: 'nhentai.net', user_agent, cookie_value }) //check above
+;(async () => {
+    //Explores the home page
+    const { data } = await nhentai.explore()
+    console.log(data)
+})()
+```
+
 ```ts
 import { NHentai } from '@shineiichijo/nhentai-ts'
 

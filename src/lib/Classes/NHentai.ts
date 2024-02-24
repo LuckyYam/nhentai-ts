@@ -1,30 +1,58 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { load } from 'cheerio'
+import { CookieJar } from 'tough-cookie'
+import { HttpsCookieAgent } from 'http-cookie-agent/http'
 import { parseDoujinList, parseDoujinInfo } from '../../Parser'
 import { sites } from '../constants'
 import { IDoujinInfo, TSite, IList } from '../../Types'
 
 export class NHentai {
+    #axios: AxiosInstance
     /**
      * Constructs an instance of the NHentai class
      * @param options Options of the NHentai class
      */
     constructor(
-        private options: { site: TSite | `https://${TSite}` } = {
+        private readonly _options: {
+            site: TSite | `https://${TSite}`
+            user_agent?: string
+            cookie_value?: string
+        } = {
             site: 'https://nhentai.to'
         }
     ) {
+        this.#axios = axios
         if (
             !sites.includes(
-                this.options.site
+                this._options.site
                     .replace('https:', '')
                     .replace(/\//g, '') as TSite
             )
         )
-            this.options.site = 'https://nhentai.website'
-        if (!this.options.site.startsWith('https://'))
-            this.options.site =
-                `https://${this.options.site}` as `https://${TSite}`
+            this._options.site = 'https://nhentai.to'
+        if (!this._options.site.startsWith('https://'))
+            this._options.site =
+                `https://${this._options.site}` as `https://${TSite}`
+        if (
+            this._options.site.includes('nhentai.net') &&
+            (!this._options.cookie_value || !this._options.user_agent)
+        )
+            throw new Error(
+                `Assign the ${
+                    !this._options.cookie_value
+                        ? "'cookie_value'"
+                        : "'user_agent'"
+                } in the instance of the class to use this site.`
+            )
+        if (this._options.cookie_value) {
+            const jar = new CookieJar()
+            jar.setCookie(this._options.cookie_value, this._options.site)
+            const httpsAgent = new HttpsCookieAgent({ cookies: { jar } })
+            this.#axios = axios.create({ httpsAgent })
+        }
+        if (this._options.user_agent)
+            this.#axios.defaults.headers.common['User-Agent'] =
+                this._options.user_agent
     }
 
     /**
@@ -32,12 +60,12 @@ export class NHentai {
      * @returns Info of the random doujin
      */
     public getRandom = async (): Promise<IDoujinInfo> =>
-        await axios
-            .get<string>(`${this.options.site}/random`)
+        await this.#axios
+            .get<string>(`${this._options.site}/random`)
             .then(({ data }) =>
                 parseDoujinInfo(
                     load(data),
-                    this.options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to'
                 )
             )
             .catch((err) => {
@@ -51,12 +79,12 @@ export class NHentai {
      */
     public explore = async (page: number = 1): Promise<IList> => {
         if (isNaN(page) || page < 1) page = 1
-        return await axios
-            .get<string>(`${this.options.site}?page=${page}`)
+        return await this.#axios
+            .get<string>(`${this._options.site}?page=${page}`)
             .then(({ data }) =>
                 parseDoujinList(
                     load(data),
-                    this.options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to'
                 )
             )
             .catch((err) => {
@@ -78,12 +106,12 @@ export class NHentai {
             throw new Error("The 'query' parameter shouldn't be undefined")
         let page = 1
         if (options?.page && options.page > 0) page = options.page
-        return await axios
-            .get<string>(`${this.options.site}/search?q=${query}&page=${page}`)
+        return await this.#axios
+            .get<string>(`${this._options.site}/search?q=${query}&page=${page}`)
             .then((res) => {
                 const results = parseDoujinList(
                     load(res.data),
-                    this.options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to'
                 )
                 if (!results.data.length)
                     throw new Error('No doujin results found')
@@ -100,12 +128,12 @@ export class NHentai {
         if (!id) throw new Error("The 'id' parameter shouldn't be undefined")
         const valid = await this.validate(id)
         if (!valid) throw new Error('Invalid doujin ID')
-        return await axios
-            .get(`${this.options.site}/g/${id}`)
+        return await this.#axios
+            .get(`${this._options.site}/g/${id}`)
             .then((res) =>
                 parseDoujinInfo(
                     load(res.data),
-                    this.options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to'
                 )
             )
             .catch((err) => {
@@ -118,8 +146,8 @@ export class NHentai {
      * @param id ID of the doujin to check
      */
     public validate = (id: string | number): Promise<boolean> =>
-        axios
-            .get(`${this.options.site}/g/${id}`)
+        this.#axios
+            .get(`${this._options.site}/g/${id}`)
             .then(() => true)
             .catch(() => false)
 }
