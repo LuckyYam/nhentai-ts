@@ -57,7 +57,7 @@ const nhentai = new NHentai()
 ```ts
 import { NHentai } from '@shineiichijo/nhentai-ts'
 
-const nhentai = new NHentai({ site: 'nhentai.website' }) //configuring a mirror site of the class (you can check the available sites here: https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)
+const nhentai = new NHentai({ site: 'nhentai.to' }) //configuring a mirror site of the class (you can check the available sites here: https://github.com/LuckyYam/nhentai-ts/blob/master/src/lib/constants.ts#L1)
 //validates the ID of a doujin
 nhentai.validate('172').then(console.log)
 ```
@@ -65,8 +65,8 @@ nhentai.validate('172').then(console.log)
 ```ts
 import { NHentai } from '@shineiichijo/nhentai-ts'
 
-const nhentai = new NHentai({ site: 'https://nhentai.xxx' })
-//explores all of the available doujin
+const nhentai = new NHentai()
+//explores all of the available doujin (homepage)
 nhentai.explore(2 /* Page number of exploring the doujin */).then(console.log)
 ```
 

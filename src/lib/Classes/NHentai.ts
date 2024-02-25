@@ -5,12 +5,13 @@ import { HttpsCookieAgent } from 'http-cookie-agent/http'
 import { parseDoujinList, parseDoujinInfo } from '../../Parser'
 import { sites } from '../constants'
 import { IDoujinInfo, TSite, IList } from '../../Types'
+import { getAPIGalleryPages } from '../util'
 
 export class NHentai {
     #axios: AxiosInstance
     /**
      * Constructs an instance of the NHentai class
-     * @param options Options of the NHentai class
+     * @param _options Options of the NHentai class
      */
     constructor(
         private readonly _options: {
@@ -62,10 +63,13 @@ export class NHentai {
     public getRandom = async (): Promise<IDoujinInfo> =>
         await this.#axios
             .get<string>(`${this._options.site}/random`)
-            .then(({ data }) =>
+            .then(async ({ data }) =>
                 parseDoujinInfo(
                     load(data),
-                    this._options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to',
+                    this._options.site.includes('net')
+                        ? await getAPIGalleryPages(this.#axios, data)
+                        : undefined
                 )
             )
             .catch((err) => {
@@ -130,10 +134,13 @@ export class NHentai {
         if (!valid) throw new Error('Invalid doujin ID')
         return await this.#axios
             .get(`${this._options.site}/g/${id}`)
-            .then((res) =>
+            .then(async (res) =>
                 parseDoujinInfo(
                     load(res.data),
-                    this._options.site.split('nhentai.')[1] as 'to'
+                    this._options.site.split('nhentai.')[1] as 'to',
+                    this._options.site.includes('net')
+                        ? await getAPIGalleryPages(this.#axios, res.data)
+                        : undefined
                 )
             )
             .catch((err) => {
