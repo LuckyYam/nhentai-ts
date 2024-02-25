@@ -1,21 +1,35 @@
 import { CheerioAPI } from 'cheerio'
-import { baseURLS, imageSites, Pages } from '../lib'
+import { baseURLS, clean, getExtension, Pages, imageSites } from '../lib'
 import { TURL, IDoujinInfo } from '../Types'
 
 export const parseDoujinInfo = (
     $: CheerioAPI,
-    site: keyof typeof baseURLS
+    site: keyof typeof baseURLS,
+    api_pages?: { t: string }[]
 ): IDoujinInfo => {
     const pages: string[] = []
-    $('.thumb-container').each((i, el) => {
-        const url = $(el).find('a > img').attr('data-src')
-        if (url)
+    const gallery_id = (
+        $('.thumb-container').first().find('a > img').attr('data-src') ||
+        '/galleries/'
+    ).split('/galleries/')[0]
+    if (site === 'net' && api_pages)
+        api_pages.forEach((page, i) =>
             pages.push(
-                url
-                    .replace(`${i + 1}t`, `${i + 1}`)
-                    .replace(imageSites[site], 'i.nhentai.net')
+                `https://i.nhentai.net/galleries/${gallery_id}/${
+                    i + 1
+                }.${getExtension(page.t)}`
             )
-    })
+        )
+    else
+        $('.thumb-container').each((i, el) => {
+            const url = $(el).find('a > img').attr('data-src')
+            if (url)
+                pages.push(
+                    url
+                        .replace(`${i + 1}t`, `${i + 1}`)
+                        .replace(imageSites[site], 'i.nhentai.net')
+                )
+        })
     const cover =
         $('#cover').find('a > img').attr('data-src') ||
         $('#cover').find('a > img').attr('src')
@@ -67,14 +81,16 @@ export const parseDoujinInfo = (
         id,
         title: titles.english,
         originalTitle: titles.original,
-        parodies,
-        characters,
-        tags,
-        artists,
-        groups,
-        languages,
-        categories,
-        cover: cover ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net') : null,
+        parodies: clean(parodies),
+        characters: clean(characters),
+        tags: clean(tags),
+        artists: clean(artists),
+        groups: clean(groups),
+        languages: clean(languages),
+        categories: clean(categories),
+        cover: cover
+            ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net')
+            : null,
         images,
         url
     }

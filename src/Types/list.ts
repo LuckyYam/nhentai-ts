@@ -3,7 +3,7 @@ import { List } from '../lib/Classes/List'
 
 export interface IList {
     /** Pagination of the doujin list */
-    pagination: IPagination
+    pagination: IPagination | null
     /** Data of the list */
     data: List[]
 }
