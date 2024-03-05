@@ -29,7 +29,7 @@ After following all these steps, you are all set. You can also check the [exampl
 import { NHentai } from '@shineiichijo/nhentai-ts'
 
 const user_agent = 'User Agent'
-const cookie_value = 'cookie'
+const cookie_value = 'cf_clearance=abcdefghijklmnopq'
 const nhentai = new NHentai({ site: 'nhentai.net', user_agent, cookie_value }) //check above
 ;(async () => {
     //Explores the home page
