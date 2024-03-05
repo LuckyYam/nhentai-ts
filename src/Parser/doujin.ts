@@ -11,7 +11,9 @@ export const parseDoujinInfo = (
     const gallery_id = (
         $('.thumb-container').first().find('a > img').attr('data-src') ||
         '/galleries/'
-    ).split('/galleries/')[0]
+    )
+        .split('/galleries/')[1]
+        .split('/')[0]
     if (site === 'net' && api_pages)
         api_pages.forEach((page, i) =>
             pages.push(
