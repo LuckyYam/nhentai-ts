@@ -1,5 +1,5 @@
 import { CheerioAPI } from 'cheerio'
-import { baseURLS, clean, getExtension, Pages, imageSites } from '../lib'
+import { baseURLS, clean, getExtension, getPageStatus, Pages, imageSites } from '../lib'
 import { TURL, IDoujinInfo } from '../Types'
 
 export const parseDoujinInfo = (
@@ -23,15 +23,13 @@ export const parseDoujinInfo = (
             )
         )
     else
-        $('.thumb-container').each((i, el) => {
-            const url = $(el).find('a > img').attr('data-src')
-            if (url)
-                pages.push(
-                    url
-                        .replace(`${i + 1}t`, `${i + 1}`)
-                        .replace(imageSites[site], 'i.nhentai.net')
-                )
-        })
+    $('.thumb-container').each((i, el) => {
+        const url = ($(el).find('a > img').attr('data-src') || '').replace(`${i + 1}t`, `${i + 1}`)
+        if (url) {
+            const page = url.replace(imageSites[site], 'i.nhentai.net')
+            getPageStatus(page).then((status) => pages.push(status === 200 ? page : url))
+        }
+    })
     const cover =
         $('#cover').find('a > img').attr('data-src') ||
         $('#cover').find('a > img').attr('src')

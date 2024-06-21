@@ -36,6 +36,7 @@ export class Pages {
         pdf.pipe(stream)
         for (const url of this.pages) {
             const { data } = await axios.get<Buffer>(url, {
+                headers: url.includes('cdn.dogehls.xyz') ? { 'Referer': 'https://nhentai.to' } : {},
                 responseType: 'arraybuffer'
             })
             const img = (pdf as any).openImage(data)
