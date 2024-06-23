@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { load } from 'cheerio'
 
 export const clean = (x: string[]): string[] => {
@@ -35,3 +35,8 @@ export const getAPIGalleryPages = async (
         )
     ).data.images.pages
 }
+
+export const getPageStatus = (url: string): Promise<number> =>
+    axios.head(url)
+        .then((res: any) => res.status as number)
+        .catch((err: any) => (err.response?.status || 500) as number)

@@ -1,12 +1,12 @@
 import { CheerioAPI } from 'cheerio'
-import { baseURLS, clean, getExtension, Pages, imageSites } from '../lib'
+import { baseURLS, clean, getExtension, getPageStatus, Pages, imageSites } from '../lib'
 import { TURL, IDoujinInfo } from '../Types'
 
-export const parseDoujinInfo = (
+export const parseDoujinInfo = async (
     $: CheerioAPI,
     site: keyof typeof baseURLS,
     api_pages?: { t: string }[]
-): IDoujinInfo => {
+): Promise<IDoujinInfo> => {
     const pages: string[] = []
     const gallery_id = (
         $('.thumb-container').first().find('a > img').attr('data-src') ||
@@ -22,16 +22,15 @@ export const parseDoujinInfo = (
                 }.${getExtension(page.t)}`
             )
         )
-    else
-        $('.thumb-container').each((i, el) => {
-            const url = $(el).find('a > img').attr('data-src')
-            if (url)
-                pages.push(
-                    url
-                        .replace(`${i + 1}t`, `${i + 1}`)
-                        .replace(imageSites[site], 'i.nhentai.net')
-                )
-        })
+    else 
+    for (const el of $('.thumb-container')) {
+        const url = ($(el).find('a > img').attr('data-src') || '').replace(/t(?=\.)/, '')
+        if (url) {
+            const page = url.replace(imageSites[site], 'i.nhentai.net')
+            const status = await getPageStatus(page)
+            pages.push(status === 200 ? page : url)
+        }
+    }
     const cover =
         $('#cover').find('a > img').attr('data-src') ||
         $('#cover').find('a > img').attr('src')
@@ -90,9 +89,9 @@ export const parseDoujinInfo = (
         groups: clean(groups),
         languages: clean(languages),
         categories: clean(categories),
-        cover: cover
+        cover: !pages.includes('cdn.dogehls.xyz')
             ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net')
-            : null,
+            : cover,
         images,
         url
     }
