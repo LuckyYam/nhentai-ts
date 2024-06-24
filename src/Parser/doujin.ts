@@ -22,7 +22,7 @@ export const parseDoujinInfo = async (
                 }.${getExtension(page.t)}`
             )
         )
-    else 
+    else
     for (const el of $('.thumb-container')) {
         const url = ($(el).find('a > img').attr('data-src') || '').replace(/t(?=\.)/, '')
         if (url) {
@@ -89,9 +89,9 @@ export const parseDoujinInfo = async (
         groups: clean(groups),
         languages: clean(languages),
         categories: clean(categories),
-        cover: !pages.includes('cdn.dogehls.xyz')
+        cover: !pages.some(url => url.includes('cdn.dogehls.xyz'))
             ? cover.replace('cdn.dogehls.xyz', 't3.nhentai.net')
-            : cover,
+            : null,
         images,
         url
     }

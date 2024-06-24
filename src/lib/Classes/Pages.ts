@@ -74,8 +74,10 @@ export class Pages {
                 `${this.pages.indexOf(url) + 1}.${
                     url.split('.')[url.split('.').length - 1]
                 }`,
-                (await axios.get<Buffer>(url, { responseType: 'arraybuffer' }))
-                    .data,
+                (await axios.get<Buffer>(url, {
+                    headers: url.includes('cdn.dogehls.xyz') ? { 'Referer': 'https://nhentai.to' } : {},
+                    responseType: 'arraybuffer'
+                })).data,
                 { binary: true }
             )
         const buffer = await zip.generateAsync({ type: 'nodebuffer' })
